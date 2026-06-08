@@ -1,9 +1,9 @@
-package de.tum.aet.devops25.w10;
+package de.tum.aet.devops26.w07;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.tum.aet.devops25.w10.controller.CanteenController;
-import de.tum.aet.devops25.w10.dto.Dish;
-import de.tum.aet.devops25.w10.service.CanteenService;
+import de.tum.aet.devops26.w07.controller.CanteenController;
+import de.tum.aet.devops26.w07.dto.Dish;
+import de.tum.aet.devops26.w07.service.CanteenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package de.tum.aet.devops25.w10.dto;
+package de.tum.aet.devops26.w07.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

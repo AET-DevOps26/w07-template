@@ -1,7 +1,7 @@
-package de.tum.aet.devops25.w10.client;
+package de.tum.aet.devops26.w07.client;
 
-import de.tum.aet.devops25.w10.dto.RecommendRequest;
-import de.tum.aet.devops25.w10.dto.RecommendResponse;
+import de.tum.aet.devops26.w07.dto.RecommendRequest;
+import de.tum.aet.devops26.w07.dto.RecommendResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

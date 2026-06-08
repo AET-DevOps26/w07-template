@@ -1,4 +1,4 @@
-package de.tum.aet.devops25.w10.controller;
+package de.tum.aet.devops26.w07.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

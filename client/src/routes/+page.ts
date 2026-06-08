@@ -1,51 +1,52 @@
 import type { PageLoad } from './$types';
-import { BaseURL} from '$lib/env';
+import { BaseURL } from '$lib/env';
 import type { Meal, Recommendation, UserPreferences } from '$lib/types';
-import { getCookie, setCookie } from '$lib';
+import { getCookie } from '$lib';
 
 export const ssr = false;
 
-//get the username from the cookie
-let username: string | null = null;
-
 export const load: PageLoad = async ({ fetch }) => {
-    username = getCookie('username');
-    
-    // Prompt for username if not found in cookie
+    const username = getCookie('username');
+
     if (!username) {
-        username = prompt('Please enter your username:');
-        if (username) {
-            setCookie('username', username, 30); // Store for 30 days
-        } else {
-            // Handle case where user cancels or enters empty string
-            username = 'anonymous';
-        }
+        return {
+            needsUsername: true,
+            username: null,
+            meals: [] as Meal[],
+            recommendation: undefined as Promise<Recommendation | null> | undefined,
+            menuFilterEnabled: false,
+        };
     }
 
-    // Execute all requests in parallel, don't wait for slow ones to complete
-    const [mealsResult, preferencesResult, recommendationResult] = await Promise.allSettled([
-        fetch(`${BaseURL}/mensa-garching/today`).then(res => res.json()),
-        fetch(`${BaseURL}/preferences/${username}`).then(res => res.json()),
-        fetch(`${BaseURL}/recommend/${username}`).then(res => res.json()),
+    // Fast paths: meals + preferences. Await these so the page can render
+    // the menu without flicker.
+    const [mealsResult, preferencesResult] = await Promise.allSettled([
+        fetch(`${BaseURL}/mensa-garching/today`).then((res) => res.json()),
+        fetch(`${BaseURL}/preferences/${username}`).then((res) => res.json()),
         // TODO fetch the feature toggle state for the menu filter
     ]);
 
-    // Extract successful results or provide defaults
     const meals: Meal[] = mealsResult.status === 'fulfilled' ? mealsResult.value : [];
-    const preferences: UserPreferences = preferencesResult.status === 'fulfilled' ? preferencesResult.value : { favoriteMeals: [] };
-    const recommendation: Recommendation | null = recommendationResult.status === 'fulfilled' ? recommendationResult.value : null;
+    const preferences: UserPreferences =
+        preferencesResult.status === 'fulfilled'
+            ? preferencesResult.value
+            : { favoriteMeals: [] };
+
     // TODO change the following line to fetch the feature toggle state for the menu filter
     const menuFilterEnabled: boolean = false;
 
-    console.log('Meals:', meals);
-    console.log('Preferences:', preferences);
-    console.log('Recommendation:', recommendation);
-    console.log('Menu Filter Enabled:', menuFilterEnabled);
-
-    // Set the boolean favorite property for each meal
     meals.forEach((meal: any) => {
         meal.favorite = preferences.favoriteMeals.includes(meal.name);
     });
 
-    return { meals, recommendation, menuFilterEnabled };
+    // Slow path: the LLM recommendation. Return the promise *unawaited* so
+    // SvelteKit streams it to the page — the rest renders immediately and
+    // the banner updates when LM Studio finishes.
+    const recommendation: Promise<Recommendation | null> = fetch(
+        `${BaseURL}/recommend/${username}`,
+    )
+        .then((res) => (res.ok ? (res.json() as Promise<Recommendation>) : null))
+        .catch(() => null);
+
+    return { needsUsername: false, username, meals, recommendation, menuFilterEnabled };
 };

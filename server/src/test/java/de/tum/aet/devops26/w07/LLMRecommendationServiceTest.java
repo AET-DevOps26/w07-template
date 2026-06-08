@@ -1,8 +1,8 @@
-package de.tum.aet.devops25.w10;
+package de.tum.aet.devops26.w07;
 
-import de.tum.aet.devops25.w10.client.LLMRestClient;
-import de.tum.aet.devops25.w10.dto.Dish;
-import de.tum.aet.devops25.w10.service.LLMRecommendationService;
+import de.tum.aet.devops26.w07.client.LLMRestClient;
+import de.tum.aet.devops26.w07.dto.Dish;
+import de.tum.aet.devops26.w07.service.LLMRecommendationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

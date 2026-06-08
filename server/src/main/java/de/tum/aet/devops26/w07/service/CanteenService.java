@@ -1,8 +1,8 @@
-package de.tum.aet.devops25.w10.service;
+package de.tum.aet.devops26.w07.service;
 
-import de.tum.aet.devops25.w10.dto.Day;
-import de.tum.aet.devops25.w10.dto.Dish;
-import de.tum.aet.devops25.w10.dto.Week;
+import de.tum.aet.devops26.w07.dto.Day;
+import de.tum.aet.devops26.w07.dto.Dish;
+import de.tum.aet.devops26.w07.dto.Week;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;

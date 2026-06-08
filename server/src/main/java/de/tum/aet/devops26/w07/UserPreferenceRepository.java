@@ -1,6 +1,6 @@
-package de.tum.aet.devops25.w10;
+package de.tum.aet.devops26.w07;
 
-import de.tum.aet.devops25.w10.entity.UserPreferences;
+import de.tum.aet.devops26.w07.entity.UserPreferences;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /*

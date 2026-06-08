@@ -3,6 +3,7 @@
     import type {Meal} from '$lib/types';
     import { BaseURL } from "$lib/env";
     import { getCookie } from "$lib";
+    import { invalidateAll } from "$app/navigation";
 
     let { meal = $bindable() }: { meal: Meal } = $props();    // List of favorite meal
 
@@ -28,6 +29,10 @@
             if (!response.ok) {
                 throw new Error('Failed to update favorite status');
             }
+
+            // Re-run +page.ts load so the LLM recommendation is
+            // recomputed against the updated favorites.
+            await invalidateAll();
         } catch (error) {
             console.error('Error updating favorite status:', error);
             // Revert the change if the request fails
