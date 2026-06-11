@@ -7,7 +7,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DATABASE_URL=jdbc:postgresql://database:5432/mensa
-      - LLM_SERVICE_URL=http://llm:5000
+      - LLM_SERVICE_URL=http://llm:5001
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -43,9 +43,20 @@ services:
       context: ./llm
       dockerfile: Dockerfile
     environment:
-      - CHAIR_API_KEY=${CHAIR_API_KEY:-your_api_key_here}
+      # LM Studio on the host machine. host.docker.internal works on
+      # Docker Desktop (macOS/Windows) out of the box; extra_hosts below
+      # extends the same name to Linux hosts.
+      - LLM_API_URL=${LLM_API_URL:-http://host.docker.internal:1234/v1/chat/completions}
+      - LLM_MODEL=${LLM_MODEL:-gemma-4-e2b}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      # Set LOGOS_API_KEY in .env to switch to the TUM-hosted Logos
+      # endpoint (openai/gpt-oss-120b). When set, it overrides the
+      # LM Studio defaults above. Unset = LM Studio.
+      - LOGOS_API_KEY=${LOGOS_API_KEY:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
-      - "5000:5000"
+      - "5001:5001"
     restart: unless-stopped
 
 volumes:
