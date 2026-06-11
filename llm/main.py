@@ -22,7 +22,7 @@ if LOGOS_API_KEY:
     LLM_API_KEY = LOGOS_API_KEY
 else:
     API_URL = os.getenv("LLM_API_URL", "http://localhost:1234/v1/chat/completions")
-    MODEL_NAME = os.getenv("LLM_MODEL", "gemma-4-e2b")
+    MODEL_NAME = os.getenv("LLM_MODEL", "google/gemma-4-e2b")
     LLM_API_KEY = os.getenv("LLM_API_KEY") or os.getenv("CHAIR_API_KEY")
 
 app = FastAPI(

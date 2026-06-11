@@ -47,7 +47,7 @@ services:
       # Docker Desktop (macOS/Windows) out of the box; extra_hosts below
       # extends the same name to Linux hosts.
       - LLM_API_URL=${LLM_API_URL:-http://host.docker.internal:1234/v1/chat/completions}
-      - LLM_MODEL=${LLM_MODEL:-gemma-4-e2b}
+      - LLM_MODEL=${LLM_MODEL:-google/gemma-4-e2b}
       - LLM_API_KEY=${LLM_API_KEY:-}
       # Set LOGOS_API_KEY in .env to switch to the TUM-hosted Logos
       # endpoint (openai/gpt-oss-120b). When set, it overrides the
